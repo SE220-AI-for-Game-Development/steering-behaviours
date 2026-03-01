@@ -14,8 +14,11 @@ namespace Ai4Gamedev.Steerings
         [SerializeField]
         private float frictionValue = 0.5f;
 
-        [SerializeField, Range(1, 60)]
+        [SerializeField, Range(1, 100)]
         private float velocityLimit = 3;
+        
+        [SerializeField, Range(1, 200)]
+        private float steeringForceLimit = 5;    
 
         [SerializeField]
         private float Epsilon = 0.05f;
@@ -34,6 +37,8 @@ namespace Ai4Gamedev.Steerings
         {
             ApplyFriction();
             
+            ApplySteeringForce();
+            
             ApplyForces();
 
             void ApplyFriction()
@@ -45,6 +50,19 @@ namespace Ai4Gamedev.Steerings
 
                 var friction = -velocity.normalized * frictionValue;
                 ApplyForce(friction);
+            }
+            
+            void ApplySteeringForce()
+            {
+                var providers = GetComponents<DesiredVelocityProvider>();
+                var steering = Vector3.zero;
+                foreach (var provider in providers)
+                {
+                    var desiredVelocity = provider.GetDesiredVelocity() * provider.Weight; //
+                    steering += desiredVelocity - velocity;
+                        
+                }
+                ApplyForce(Vector3.ClampMagnitude(steering - velocity, steeringForceLimit));
             }
 
             void ApplyForces()
@@ -74,4 +92,5 @@ namespace Ai4Gamedev.Steerings
 
         
     }
+
 }
