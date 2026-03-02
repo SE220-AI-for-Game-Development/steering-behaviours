@@ -24,6 +24,7 @@ namespace Ai4Gamedev.Steerings
         private float Epsilon = 0.05f;
 
         public float VelocityLimit => velocityLimit;
+        public float SteeringForceLimit => steeringForceLimit;
 
         public Vector3 Velocity => velocity;
 
@@ -55,14 +56,24 @@ namespace Ai4Gamedev.Steerings
             void ApplySteeringForce()
             {
                 var providers = GetComponents<DesiredVelocityProvider>();
-                var steering = Vector3.zero;
+                var weightedDesired = Vector3.zero;
+                var totalWeight = 0f;
                 foreach (var provider in providers)
                 {
-                    var desiredVelocity = provider.GetDesiredVelocity() * provider.Weight; //
-                    steering += desiredVelocity - velocity;
-                        
+                    var desired = provider.GetDesiredVelocity();
+                    var w = provider.Weight;
+                    weightedDesired += desired * w;
+                    totalWeight += w;
                 }
-                ApplyForce(Vector3.ClampMagnitude(steering - velocity, steeringForceLimit));
+
+                if (totalWeight < 0.001f)
+                {
+                    return;
+                }
+
+                var desiredVelocity = weightedDesired / totalWeight;
+                var steering = desiredVelocity - velocity;
+                ApplyForce(Vector3.ClampMagnitude(steering, steeringForceLimit));
             }
 
             void ApplyForces()
@@ -79,7 +90,7 @@ namespace Ai4Gamedev.Steerings
                     // Only rotate the car when moving forward so that reversing
                     // doesn't flip transform.forward and break input direction next frame
                     bool movingForward = Vector3.Dot(velocity, transform.forward) >= 0f;
-                    if (movingForward)
+                    // if (movingForward)
                     {
                         transform.rotation = Quaternion.LookRotation(velocity);
                         transform.position += velocity * Time.deltaTime;
