@@ -1,5 +1,6 @@
 namespace Ai4Gamedev.Steerings
 {
+    using System.Linq;
     using UnityEngine;
 
     public class Vehicle : MonoBehaviour
@@ -58,7 +59,7 @@ namespace Ai4Gamedev.Steerings
                 var providers = GetComponents<DesiredVelocityProvider>();
                 var weightedDesired = Vector3.zero;
                 var totalWeight = 0f;
-                foreach (var provider in providers)
+                foreach (var provider in providers.Where(provider => provider.enabled))
                 {
                     var desired = provider.GetDesiredVelocity();
                     var w = provider.Weight;
