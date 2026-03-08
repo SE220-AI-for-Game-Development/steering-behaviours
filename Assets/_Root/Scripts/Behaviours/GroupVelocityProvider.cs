@@ -5,15 +5,15 @@ namespace Ai4Gamedev.Steerings.Behaviours
 
     public abstract class GroupVelocityProvider : DesiredVelocityProvider
     {
-        protected List<Vehicle> GetNeighbours(float radius)
+        protected List<Agent> GetNeighbours(float radius)
         {
-            var all = FindObjectsOfType<Vehicle>();
-            var list = new List<Vehicle>();
+            var all = FindObjectsOfType<Agent>();
+            var list = new List<Agent>();
             var myPos = transform.position;
 
             foreach (var v in all)
             {
-                if (v == Vehicle)
+                if (v == Agent)
                 {
                     continue;
                 }

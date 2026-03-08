@@ -26,10 +26,10 @@ namespace Ai4Gamedev.Steerings.Behaviours
                 angle-= angleChangeStep;
             }
             
-            var futurePos = Vehicle.transform.position + Vehicle.Velocity.normalized * circleDistance;
+            var futurePos = Agent.transform.position + Agent.Velocity.normalized * circleDistance;
             var vector = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad),0, Mathf.Sin(angle * Mathf.Deg2Rad)) * circleRadius;
 
-            return (futurePos + vector - transform.position).normalized * Vehicle.VelocityLimit;
+            return (futurePos + vector - transform.position).normalized * Agent.VelocityLimit;
         }
     }
 }

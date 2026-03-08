@@ -11,8 +11,8 @@ namespace Ai4Gamedev.Steerings.Behaviours
         
         public override Vector3 GetDesiredVelocity()
         {
-            var maxSpeed = Vehicle.VelocityLimit;
-            var v = Vehicle.Velocity;
+            var maxSpeed = Agent.VelocityLimit;
+            var v = Agent.Velocity;
             var point = camera.WorldToViewportPoint(transform.position);
 
             if (point.x > 1 - edge)

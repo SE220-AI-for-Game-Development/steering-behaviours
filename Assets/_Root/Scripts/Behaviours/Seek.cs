@@ -19,7 +19,7 @@ namespace Ai4Gamedev.Steerings.Behaviours
                 k = distance.magnitude / arriveRadius;
             }
 
-            return distance.normalized * Vehicle.VelocityLimit * k;
+            return distance.normalized * Agent.VelocityLimit * k;
         }
     }
 }

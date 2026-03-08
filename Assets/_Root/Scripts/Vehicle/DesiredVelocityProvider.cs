@@ -9,11 +9,11 @@ namespace Ai4Gamedev.Steerings
         
         public float Weight => weight;
         
-        protected Vehicle Vehicle;
+        protected Agent Agent;
 
         private void Awake()
         {
-            Vehicle = GetComponent<Vehicle>();
+            Agent = GetComponent<Agent>();
         }
 
         public abstract Vector3 GetDesiredVelocity();

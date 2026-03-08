@@ -3,7 +3,7 @@ namespace Ai4Gamedev.Steerings
     using System.Linq;
     using UnityEngine;
 
-    public class Vehicle : MonoBehaviour
+    public class Agent : MonoBehaviour
     {
         private Vector3 velocity;
 

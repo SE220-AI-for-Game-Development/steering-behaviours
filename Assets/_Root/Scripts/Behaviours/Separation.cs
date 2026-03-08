@@ -40,7 +40,7 @@ namespace Ai4Gamedev.Steerings.Behaviours
                 return Vector3.zero;
             }
 
-            return sum.normalized * Vehicle.VelocityLimit;
+            return sum.normalized * Agent.VelocityLimit;
         }
     }
 }
