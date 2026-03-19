@@ -1,4 +1,4 @@
-namespace Ai4Gamedev.Steerings.Behaviours
+namespace Ai4Gamedev.MiniMax.Behaviours
 {
     using System.Collections.Generic;
     using UnityEngine;

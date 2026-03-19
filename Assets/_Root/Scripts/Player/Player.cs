@@ -1,4 +1,4 @@
-namespace Ai4Gamedev.Steerings
+namespace Ai4Gamedev.MiniMax
 {
     using UnityEngine;
 
