@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8a7ba2ee8945089657faadbc5fd57d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ai4Gamedev.MiniMax.Isolation.Views.CellView
+  renderer: {fileID: 0}
 --- !u!1 &8795376986923334722
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,8 +138,6 @@ GameObject:
   - component: {fileID: 254937880867830624}
   - component: {fileID: 7296414568093398370}
   - component: {fileID: 1131522166071828999}
-  - component: {fileID: 5266333966021386418}
-  - component: {fileID: 1238403421124135009}
   m_Layer: 0
   m_Name: Cell
   m_TagString: Untagged
@@ -218,36 +217,3 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5266333966021386418
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8795376986923334722}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1238403421124135009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8795376986923334722}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad8a7ba2ee8945089657faadbc5fd57d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Ai4Gamedev.MiniMax.Isolation.Views.CellView

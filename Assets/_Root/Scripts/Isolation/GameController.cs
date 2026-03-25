@@ -1,8 +1,5 @@
 namespace Ai4Gamedev.MiniMax.Isolation
 {
-    using System;
-    using System.Linq;
-    using Unity.VisualScripting;
     using UnityEngine;
 
     public class GameController : MonoBehaviour
@@ -13,35 +10,44 @@ namespace Ai4Gamedev.MiniMax.Isolation
         [SerializeField]
         private GameBoardView gameBoardView;
 
-        private IPlayer secondPlayer;
-        
-        private IPlayer currentPlayer;
-        
-        private IGameBoard gameBoard;
+        [SerializeField]
+        private BoardInput boardInput;
 
         private readonly IPossibleMovesProvider movesProvider = new PossibleMovesProvider();
-        
+
+        private IPlayer secondPlayer;
+        private IPlayer currentPlayer;
+        private IGameBoard gameBoard;
+
         private async void Start()
         {
             gameBoard = new GameBoard(gameBoardView);
 
             unityPlayer.Id = 1;
+            unityPlayer.Setup(boardInput, gameBoardView);
+
             secondPlayer = new MinimaxPlayer(2);
             currentPlayer = unityPlayer;
 
-            while (!IsGameOver())
-            {
-                var possibleMoves = movesProvider.GetPossibleMovesFor(currentPlayer.Id);
-                var nextMove = await currentPlayer.GetMove(possibleMoves);
-                
-                await gameBoard.ApplyMove(nextMove);
-            }
+            await RunGameLoop();
         }
 
-        private bool IsGameOver()
+        private async Cysharp.Threading.Tasks.UniTask RunGameLoop()
         {
-            return !movesProvider.GetPossibleMovesFor(1).Any() ||
-                !movesProvider.GetPossibleMovesFor(2).Any();
+            while (true)
+            {
+                var possibleMoves = movesProvider.GetPossibleMovesFor(gameBoard, currentPlayer.Id);
+                if (possibleMoves.Count == 0)
+                {
+                    Debug.Log($"[Isolation] Game over. Player {currentPlayer.Id} has no legal moves.");
+                    break;
+                }
+
+                var move = await currentPlayer.GetMove(possibleMoves);
+                await gameBoard.ApplyMove(move);
+
+                currentPlayer = currentPlayer == unityPlayer ? secondPlayer : unityPlayer;
+            }
         }
     }
 }

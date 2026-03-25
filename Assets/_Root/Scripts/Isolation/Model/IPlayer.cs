@@ -2,6 +2,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
 {
     using System.Collections.Generic;
     using Cysharp.Threading.Tasks;
+    using UnityEngine;
 
     public interface IPlayer
     {
@@ -16,7 +17,20 @@ namespace Ai4Gamedev.MiniMax.Isolation
 
         public UniTask<Move> GetMove(List<Move> possibleMoves)
         {
-            throw new System.NotImplementedException();
+            if (possibleMoves == null)
+            {
+                throw new System.ArgumentNullException(nameof(possibleMoves));
+            }
+
+            if (possibleMoves.Count == 0)
+            {
+                return UniTask.FromResult<Move>(null);
+            }
+
+            var index = UnityEngine.Random.Range(0, possibleMoves.Count);
+            var chosenMove = possibleMoves[index];
+
+            return UniTask.FromResult(chosenMove);
         }
 
         public MinimaxPlayer(int id)
