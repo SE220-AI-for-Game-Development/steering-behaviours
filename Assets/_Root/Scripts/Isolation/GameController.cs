@@ -45,6 +45,9 @@ namespace Ai4Gamedev.MiniMax.Isolation
         [SerializeField]
         private float moveTimeoutSeconds = 2.0f;
 
+        [SerializeField]
+        private bool loseOnTimeout = true;
+
         private BoardInput boardInput;
 
         private readonly IPossibleMovesProvider movesProvider = new PossibleMovesProvider();
@@ -99,14 +102,18 @@ namespace Ai4Gamedev.MiniMax.Isolation
                     break;
                 }
 
+                var useTimeout = loseOnTimeout && currentPlayer is not UnityPlayer;
                 var moveTask = currentPlayer.GetMove(gameBoard, possibleMoves).AsTask();
-                var timeoutTask = Task.Delay(TimeSpan.FromSeconds(moveTimeoutSeconds));
-                var completedTask = await Task.WhenAny(moveTask, timeoutTask);
-                if (completedTask != moveTask)
+                if (useTimeout)
                 {
-                    Debug.LogWarning($"[Isolation] Disqualified: {currentPlayer.Name} (P{currentPlayer.Id}) exceeded move timeout ({moveTimeoutSeconds:0.##}s). Winner: {nextPlayer.Name} (P{nextPlayer.Id}).");
-                    await ShowWinnerWithDelay(nextPlayer);
-                    break;
+                    var timeoutTask = Task.Delay(TimeSpan.FromSeconds(moveTimeoutSeconds));
+                    var completedTask = await Task.WhenAny(moveTask, timeoutTask);
+                    if (completedTask != moveTask)
+                    {
+                        Debug.LogWarning($"[Isolation] Disqualified: {currentPlayer.Name} (P{currentPlayer.Id}) exceeded move timeout ({moveTimeoutSeconds:0.##}s). Winner: {nextPlayer.Name} (P{nextPlayer.Id}).");
+                        await ShowWinnerWithDelay(nextPlayer);
+                        break;
+                    }
                 }
 
                 var move = await moveTask;
