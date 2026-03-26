@@ -9,6 +9,9 @@ namespace Ai4Gamedev.MiniMax.Isolation.Views
         [SerializeField]
         private Renderer playerRenderer;
 
+        [SerializeField]
+        private float moveDurationSeconds = 0.6f;
+
         private void Awake()
         {
             if (playerRenderer == null)
@@ -35,12 +38,18 @@ namespace Ai4Gamedev.MiniMax.Isolation.Views
 
         public async UniTask AnimateMove(Vector3 destination)
         {
+            if (Vector3.Distance(transform.position, destination) < 0.01f)
+            {
+                return;
+            }
+
             transform.DOKill();
 
             var tcs = new UniTaskCompletionSource();
-            transform.DOMove(destination, 0.4f)
-                .SetEase(Ease.OutCubic)
-                .OnComplete(() => tcs.TrySetResult());
+            transform.DOMove(destination, moveDurationSeconds)
+                .SetEase(Ease.InOutSine)
+                .OnComplete(() => tcs.TrySetResult())
+                .OnKill(() => tcs.TrySetResult());
 
             await tcs.Task;
         }
@@ -50,7 +59,7 @@ namespace Ai4Gamedev.MiniMax.Isolation.Views
             return playerId switch
             {
                 1 => new Color(0.2f, 0.6f, 1f, 1f),
-                2 => new Color(0.9f, 0.85f, 0.2f, 1f),
+                2 => new Color(0.9f, 0.11f, 0.11f),
                 _ => Color.white
             };
         }

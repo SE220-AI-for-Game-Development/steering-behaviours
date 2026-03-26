@@ -44,13 +44,13 @@ namespace Ai4Gamedev.MiniMax.Isolation
         {
             if (move == null)
             {
-                Debug.Log("[Isolation] IsValidMove: move is null.");
+                Debug.LogWarning("[Isolation] Invalid move: move is null.");
                 return false;
             }
 
             if (move.DestinationPosition == null || move.BlockPosition == null)
             {
-                Debug.Log("[Isolation] IsValidMove: destination or block is null.");
+                Debug.LogWarning($"[Isolation] Invalid move for P{move.PlayerId}: destination or block is null.");
                 return false;
             }
 
@@ -60,25 +60,25 @@ namespace Ai4Gamedev.MiniMax.Isolation
 
             if (move.DestinationPosition.Column < 0 || move.DestinationPosition.Column >= boardWidth)
             {
-                Debug.Log("[Isolation] IsValidMove: destination column out of bounds.");
+                Debug.LogWarning($"[Isolation] Invalid move for P{move.PlayerId}: destination out of bounds. {move}");
                 return false;
             }
 
             if (move.DestinationPosition.Row < 0 || move.DestinationPosition.Row >= boardHeight)
             {
-                Debug.Log("[Isolation] IsValidMove: destination row out of bounds.");
+                Debug.LogWarning($"[Isolation] Invalid move for P{move.PlayerId}: destination out of bounds. {move}");
                 return false;
             }
 
             if (move.BlockPosition.Column < 0 || move.BlockPosition.Column >= boardWidth)
             {
-                Debug.Log("[Isolation] IsValidMove: block column out of bounds.");
+                Debug.LogWarning($"[Isolation] Invalid move for P{move.PlayerId}: block out of bounds. {move}");
                 return false;
             }
 
             if (move.BlockPosition.Row < 0 || move.BlockPosition.Row >= boardHeight)
             {
-                Debug.Log("[Isolation] IsValidMove: block row out of bounds.");
+                Debug.LogWarning($"[Isolation] Invalid move for P{move.PlayerId}: block out of bounds. {move}");
                 return false;
             }
 
@@ -100,7 +100,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
 
             if (startColumn < 0 || startRow < 0)
             {
-                Debug.Log("[Isolation] IsValidMove: could not find player's occupied cell.");
+                Debug.LogWarning($"[Isolation] Invalid move for P{move.PlayerId}: player position not found. {move}");
                 return false;
             }
 
@@ -110,32 +110,32 @@ namespace Ai4Gamedev.MiniMax.Isolation
 
             if (dx == 0 && dy == 0)
             {
-                Debug.Log("[Isolation] IsValidMove: destination equals start.");
+                Debug.LogWarning($"[Isolation] Invalid move for P{move.PlayerId}: destination equals start. {move}");
                 return false;
             }
 
             if (Math.Abs(dx) > 1 || Math.Abs(dy) > 1)
             {
-                Debug.Log("[Isolation] IsValidMove: destination not king8-adjacent.");
+                Debug.LogWarning($"[Isolation] Invalid move for P{move.PlayerId}: destination not king8-adjacent. {move}");
                 return false;
             }
 
             if (cells[move.DestinationPosition.Column, move.DestinationPosition.Row].State != CellState.Free)
             {
-                Debug.Log("[Isolation] IsValidMove: destination cell not free.");
+                Debug.LogWarning($"[Isolation] Invalid move for P{move.PlayerId}: destination not free. {move}");
                 return false;
             }
 
             if (move.BlockPosition.Column == move.DestinationPosition.Column &&
                 move.BlockPosition.Row == move.DestinationPosition.Row)
             {
-                Debug.Log("[Isolation] IsValidMove: block equals destination.");
+                Debug.LogWarning($"[Isolation] Invalid move for P{move.PlayerId}: block equals destination. {move}");
                 return false;
             }
 
             if (cells[move.BlockPosition.Column, move.BlockPosition.Row].State != CellState.Free)
             {
-                Debug.Log("[Isolation] IsValidMove: block cell not free.");
+                Debug.LogWarning($"[Isolation] Invalid move for P{move.PlayerId}: block not free. {move}");
                 return false;
             }
 
@@ -153,8 +153,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
         {
             if (!IsValidMove(move))
             {
-                Debug.Log(
-                    $"[Isolation] ApplyMove rejected: Player={move.PlayerId}, Dest={move.DestinationPosition}, Block={move.BlockPosition}.");
+                Debug.LogWarning($"[Isolation] ApplyMove rejected for P{move.PlayerId}: {move}.");
                 throw new InvalidOperationException("Invalid move.");
             }
 
@@ -165,8 +164,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
                 await view.ShowMove(move);
             }
 
-            Debug.Log(
-                $"[Isolation] ApplyMove: Player={move.PlayerId}, Dest={move.DestinationPosition}, Block={move.BlockPosition}.");
+            Debug.Log($"[Isolation] Applied move for P{move.PlayerId}: {move}.");
         }
 
         private void FreePlayerCell(int playerId)

@@ -7,5 +7,10 @@ namespace Ai4Gamedev.MiniMax.Isolation
         public Position DestinationPosition { get; set; }
 
         public Position BlockPosition { get; set; }
+
+        public override string ToString()
+        {
+            return $"Dest={DestinationPosition}, Block={BlockPosition}";
+        }
     }
 }

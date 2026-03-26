@@ -100,10 +100,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
             {
                 return MaximizingSearch(board, sorted, depth, alpha, beta);
             }
-            else
-            {
-                return MinimizingSearch(board, sorted, depth, alpha, beta);
-            }
+            return MinimizingSearch(board, sorted, depth, alpha, beta);
         }
 
         private int MaximizingSearch(IGameBoard board, List<Move> moves, int depth, int alpha, int beta)
