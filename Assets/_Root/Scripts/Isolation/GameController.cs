@@ -68,7 +68,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
             if (minimaxVsMinimax)
             {
                 firstPlayer = new MinimaxPlayer(1, new SampleStrategy(firstBotName));
-                secondPlayer = new MinimaxPlayer(2, new SampleStrategy(secondBotName));
+                secondPlayer = new MinimaxPlayer(2, new CoolStrategy(secondBotName));
                 currentPlayer = firstPlayer;
             }
             else
