@@ -10,7 +10,7 @@ namespace Ai4Gamedev.MiniMax.Isolation.Views
         
         public void Show(IPlayer winner)
         {
-            text.text = string.Format(text.text, winner.Id);
+            text.text = string.Format(text.text, winner.Name);
             gameObject.SetActive(true);
         }
     }

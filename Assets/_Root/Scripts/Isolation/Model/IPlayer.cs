@@ -6,14 +6,16 @@ namespace Ai4Gamedev.MiniMax.Isolation
 
     public interface IPlayer
     {
-        public int Id { get; }
-        
+        int Id { get; }
+        string Name { get; }
+
         UniTask<Move> GetMove(List<Move> possibleMoves);
     }
 
     public class MinimaxPlayer : IPlayer
     {
         public int Id { get; set; }
+        public string Name { get; set; }
 
         public UniTask<Move> GetMove(List<Move> possibleMoves)
         {
@@ -33,9 +35,10 @@ namespace Ai4Gamedev.MiniMax.Isolation
             return UniTask.FromResult(chosenMove);
         }
 
-        public MinimaxPlayer(int id)
+        public MinimaxPlayer(int id, string name)
         {
             Id = id;
+            Name = name;
         }
 
     }

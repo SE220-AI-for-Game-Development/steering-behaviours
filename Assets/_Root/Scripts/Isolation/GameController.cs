@@ -16,6 +16,9 @@ namespace Ai4Gamedev.MiniMax.Isolation
         [SerializeField]
         private GameOverPopUp gameOverPopUp;
 
+        [SerializeField]
+        private string botName = "Bot";
+
         private BoardInput boardInput;
 
         private readonly IPossibleMovesProvider movesProvider = new PossibleMovesProvider();
@@ -36,7 +39,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
             unityPlayer.Id = 1;
             unityPlayer.Setup(boardInput, gameBoardView);
 
-            secondPlayer = new MinimaxPlayer(2);
+            secondPlayer = new MinimaxPlayer(2, botName);
             currentPlayer = unityPlayer;
 
             await RunGameLoop();

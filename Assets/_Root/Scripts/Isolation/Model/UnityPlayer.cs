@@ -7,7 +7,11 @@ namespace Ai4Gamedev.MiniMax.Isolation
 
     public class UnityPlayer : MonoBehaviour, IPlayer
     {
+        [SerializeField]
+        private string playerName = "Player";
+
         public int Id { get; set; }
+        public string Name => playerName;
 
         private BoardInput boardInput;
         private GameBoardView boardView;
