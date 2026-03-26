@@ -30,15 +30,21 @@ namespace Ai4Gamedev.MiniMax.Isolation
             if (opponentMoves.Count == 0) return 10000;
             if (myMoves.Count == 0) return -10000;
 
-            int score = (myMoves.Count * 10) - (opponentMoves.Count * 30);
-            
             Position myPos = GetPlayerPosition(board, playerId);
             Position oppPos = GetPlayerPosition(board, opponentId);
-            
             int distToOpponent = GetDistance(myPos, oppPos);
-            if (distToOpponent <= 2) score += 20;
-            
-            score += CalculateCentrality(myPos) * 5;
+
+            int score = 0;
+            if (opponentMoves.Count < 3 || distToOpponent > 4)
+            {
+                score = (myMoves.Count * 5) - (opponentMoves.Count * 100);
+            }
+            else
+            {
+                score = (myMoves.Count * 10) - (opponentMoves.Count * 40);
+                if (distToOpponent <= 2) score += 40;
+                score += CalculateCentrality(myPos) * 8;
+            }
 
             return score;
         }
@@ -48,31 +54,39 @@ namespace Ai4Gamedev.MiniMax.Isolation
             return moves.OrderByDescending(m =>
             {
                 int priority = 0;
-                priority += CalculateCentrality(m.DestinationPosition) * 10;
-                int distToSelf = GetDistance(m.DestinationPosition, m.BlockPosition);
-                if (distToSelf > 1) priority += 5;
+
+                priority += CalculateCentrality(m.BlockPosition) * 20;
+
+                if (GetDistance(m.DestinationPosition, m.BlockPosition) > 1) priority += 15;
+
+                priority += CalculateCentrality(m.DestinationPosition) * 5;
+
                 return priority;
             }).ToList();
         }
 
         private int CalculateCentrality(Position pos)
         {
+            if (pos == null) return 0;
             return (2 - Mathf.Abs(2 - pos.Column)) + (2 - Mathf.Abs(2 - pos.Row));
         }
-        
+
         private int GetDistance(Position a, Position b)
         {
             if (a == null || b == null) return 0;
             return Mathf.Abs(a.Column - b.Column) + Mathf.Abs(a.Row - b.Row);
         }
-        
+
         private Position GetPlayerPosition(IGameBoard board, int playerId)
         {
             var cells = board.Cells;
             for (int x = 0; x < cells.GetLength(0); x++)
             for (int y = 0; y < cells.GetLength(1); y++)
+            {
                 if (cells[x, y].State == CellState.Occupied && cells[x, y].PlayerId == playerId)
                     return new Position { Column = x, Row = y };
+            }
+
             return null;
         }
     }
