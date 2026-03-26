@@ -7,7 +7,10 @@ namespace Ai4Gamedev.MiniMax.Isolation
         Cell[,] Cells { get; }
         
         bool IsValidMove(Move move);
-        
+
+        /// <summary>Applies a move synchronously with no view side-effects. Use for simulation only.</summary>
+        void SimulateMove(Move move);
+
         UniTask ApplyMove(Move move);
         
         IGameBoard Clone();

@@ -22,7 +22,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
             this.boardView = boardView;
         }
 
-        public async UniTask<Move> GetMove(List<Move> possibleMoves)
+        public async UniTask<Move> GetMove(IGameBoard board, List<Move> possibleMoves)
         {
             var destination = await SelectDestination(possibleMoves);
             await boardView.AnimatePlayerMove(Id, destination);

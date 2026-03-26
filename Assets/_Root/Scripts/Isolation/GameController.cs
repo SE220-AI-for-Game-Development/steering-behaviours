@@ -39,7 +39,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
             unityPlayer.Id = 1;
             unityPlayer.Setup(boardInput, gameBoardView);
 
-            secondPlayer = new MinimaxPlayer(2, botName);
+            secondPlayer = new MinimaxPlayer(2, new SampleStrategy(botName));
             currentPlayer = unityPlayer;
 
             await RunGameLoop();
@@ -58,7 +58,14 @@ namespace Ai4Gamedev.MiniMax.Isolation
                     break;
                 }
 
-                var move = await currentPlayer.GetMove(possibleMoves);
+                var move = await currentPlayer.GetMove(gameBoard, possibleMoves);
+                if (move == null || !gameBoard.IsValidMove(move))
+                {
+                    Debug.LogWarning($"[Isolation] Player {currentPlayer.Name} returned invalid move and is disqualified.");
+                    gameOverPopUp.Show(nextPlayer);
+                    break;
+                }
+
                 await gameBoard.ApplyMove(move);
 
                 currentPlayer = nextPlayer;

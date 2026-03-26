@@ -142,6 +142,13 @@ namespace Ai4Gamedev.MiniMax.Isolation
             return true;
         }
 
+        public void SimulateMove(Move move)
+        {
+            FreePlayerCell(move.PlayerId);
+            Cells[move.DestinationPosition.Column, move.DestinationPosition.Row].Occupy(move.PlayerId);
+            Cells[move.BlockPosition.Column, move.BlockPosition.Row].Ruin();
+        }
+
         public async UniTask ApplyMove(Move move)
         {
             if (!IsValidMove(move))
@@ -151,29 +158,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
                 throw new InvalidOperationException("Invalid move.");
             }
 
-            var cells = Cells;
-            var boardWidth = cells.GetLength(0);
-            var boardHeight = cells.GetLength(1);
-
-            // Find current player's occupied cell.
-            var startColumn = -1;
-            var startRow = -1;
-            for (int x = 0; x < boardWidth; x++)
-            {
-                for (int y = 0; y < boardHeight; y++)
-                {
-                    if (cells[x, y].State == CellState.Occupied &&
-                        cells[x, y].PlayerId == move.PlayerId)
-                    {
-                        startColumn = x;
-                        startRow = y;
-                    }
-                }
-            }
-
-            cells[startColumn, startRow].Free();
-            cells[move.DestinationPosition.Column, move.DestinationPosition.Row].Occupy(move.PlayerId);
-            cells[move.BlockPosition.Column, move.BlockPosition.Row].Ruin();
+            SimulateMove(move);
 
             if (view != null)
             {
@@ -182,6 +167,21 @@ namespace Ai4Gamedev.MiniMax.Isolation
 
             Debug.Log(
                 $"[Isolation] ApplyMove: Player={move.PlayerId}, Dest={move.DestinationPosition}, Block={move.BlockPosition}.");
+        }
+
+        private void FreePlayerCell(int playerId)
+        {
+            for (var x = 0; x < Cells.GetLength(0); x++)
+            {
+                for (var y = 0; y < Cells.GetLength(1); y++)
+                {
+                    if (Cells[x, y].State == CellState.Occupied && Cells[x, y].PlayerId == playerId)
+                    {
+                        Cells[x, y].Free();
+                        return;
+                    }
+                }
+            }
         }
 
         public IGameBoard Clone()
