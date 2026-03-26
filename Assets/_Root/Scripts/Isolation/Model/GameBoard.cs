@@ -133,7 +133,10 @@ namespace Ai4Gamedev.MiniMax.Isolation
                 return false;
             }
 
-            if (cells[move.BlockPosition.Column, move.BlockPosition.Row].State != CellState.Free)
+            var blockIsStartCell = move.BlockPosition.Column == startColumn &&
+                                   move.BlockPosition.Row == startRow;
+            if (!blockIsStartCell &&
+                cells[move.BlockPosition.Column, move.BlockPosition.Row].State != CellState.Free)
             {
                 Debug.LogWarning($"[Isolation] Invalid move for P{move.PlayerId}: block not free. {move}");
                 return false;

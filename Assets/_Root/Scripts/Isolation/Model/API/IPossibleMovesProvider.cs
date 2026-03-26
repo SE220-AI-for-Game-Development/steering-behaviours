@@ -70,6 +70,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
                     }
 
                     // Extra block: any free cell except destination.
+                    // Also allow blocking the player's start cell, because it becomes free after the move.
                     for (int bx = 0; bx < boardWidth; bx++)
                     {
                         for (int by = 0; by < boardHeight; by++)
@@ -79,7 +80,8 @@ namespace Ai4Gamedev.MiniMax.Isolation
                                 continue;
                             }
 
-                            if (cells[bx, by].State != CellState.Free)
+                            var isStartCell = bx == occupiedPosition.Column && by == occupiedPosition.Row;
+                            if (!isStartCell && cells[bx, by].State != CellState.Free)
                             {
                                 continue;
                             }
