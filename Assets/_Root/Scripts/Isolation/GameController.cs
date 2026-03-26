@@ -2,6 +2,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
 {
     using Cysharp.Threading.Tasks;
     using UnityEngine;
+    using Views;
 
     [RequireComponent(typeof(BoardInput))]
     public class GameController : MonoBehaviour
@@ -11,6 +12,9 @@ namespace Ai4Gamedev.MiniMax.Isolation
 
         [SerializeField]
         private GameBoardView gameBoardView;
+
+        [SerializeField]
+        private GameOverPopUp gameOverPopUp;
 
         private BoardInput boardInput;
 
@@ -43,16 +47,18 @@ namespace Ai4Gamedev.MiniMax.Isolation
             while (true)
             {
                 var possibleMoves = movesProvider.GetPossibleMovesFor(gameBoard, currentPlayer.Id);
+                var nextPlayer = currentPlayer == unityPlayer ? secondPlayer : unityPlayer;
+
                 if (possibleMoves.Count == 0)
                 {
-                    Debug.Log($"[Isolation] Game over. Player {currentPlayer.Id} has no legal moves.");
+                    gameOverPopUp.Show(nextPlayer);
                     break;
                 }
 
                 var move = await currentPlayer.GetMove(possibleMoves);
                 await gameBoard.ApplyMove(move);
 
-                currentPlayer = currentPlayer == unityPlayer ? secondPlayer : unityPlayer;
+                currentPlayer = nextPlayer;
             }
         }
     }
