@@ -12,11 +12,11 @@ namespace Ai4Gamedev.MiniMax.Isolation
         private readonly IPossibleMovesProvider movesProvider;
         private IGameBoard board1;
 
-        public NykytaKasianenkoMinimaxStrategy(int searchDepth, IGameBoard board, string name = "BotNykyta")
+        public NykytaKasianenkoMinimaxStrategy(IGameBoard board, string name = "BotNykyta")
         {
             board1 = board;
             this.name = name;
-            SearchDepth = searchDepth;
+            SearchDepth = 5;
             movesProvider = new PossibleMovesProvider();
         }
 
@@ -25,7 +25,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
             return movesProvider.GetPossibleMovesFor(board, playerId).Count;
         }
 
-        public List<Move> Sort(List<Move> moves)
+        public List<Move> Sort(IGameBoard board, List<Move> moves)
         {
             var cells = board1.Cells;
             

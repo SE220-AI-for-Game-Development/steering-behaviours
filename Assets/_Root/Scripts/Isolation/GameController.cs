@@ -67,8 +67,8 @@ namespace Ai4Gamedev.MiniMax.Isolation
             gameBoard = new GameBoard(gameBoardView);
             if (minimaxVsMinimax)
             {
-                firstPlayer = new MinimaxPlayer(1, new SampleStrategy(firstBotName));
-                secondPlayer = new MinimaxPlayer(2, new SampleStrategy(secondBotName));
+                firstPlayer = new MinimaxPlayer(1, new NykytaKasianenkoMinimaxStrategy(gameBoard));
+                secondPlayer = new MinimaxPlayer(2, new LimitOpponentStrategy("Stranger bot"));
                 currentPlayer = firstPlayer;
             }
             else
@@ -77,7 +77,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
                 unityPlayer.Setup(boardInput, gameBoardView);
 
                 firstPlayer = unityPlayer;
-                secondPlayer = new MinimaxPlayer(2, new SampleStrategy(botName));
+                secondPlayer = new MinimaxPlayer(2, new LimitOpponentStrategy(botName));
                 currentPlayer = firstPlayer;
             }
 
