@@ -45,7 +45,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
 
         private Move FindBestMove(IGameBoard board, List<Move> possibleMoves)
         {
-            var sorted = strategy.Sort(possibleMoves);
+            var sorted = strategy.Sort(board, possibleMoves);
             var bestScore = int.MinValue;
             var bestMove = sorted[0];
 
@@ -94,7 +94,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
                 return strategy.EvaluateBoard(board, Id);
             }
 
-            var sorted = strategy.Sort(moves);
+            var sorted = strategy.Sort(board, moves);
 
             if (maximizing)
             {

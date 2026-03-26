@@ -10,6 +10,6 @@ namespace Ai4Gamedev.MiniMax.Isolation
         
         int EvaluateBoard(IGameBoard board, int playerId);
         
-        List<Move> Sort(List<Move> moves);
+        List<Move> Sort(IGameBoard board, List<Move> moves);
     }
 }

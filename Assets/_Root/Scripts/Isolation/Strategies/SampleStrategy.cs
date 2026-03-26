@@ -23,7 +23,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
             return movesProvider.GetPossibleMovesFor(board, playerId).Count;
         }
 
-        public List<Move> Sort(List<Move> moves)
+        public List<Move> Sort(IGameBoard board, List<Move> moves)
         {
             var shuffled = new List<Move>(moves);
             for (var i = shuffled.Count - 1; i > 0; i--)
