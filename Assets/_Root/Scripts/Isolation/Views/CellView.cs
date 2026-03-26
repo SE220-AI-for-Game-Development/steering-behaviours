@@ -1,6 +1,8 @@
 namespace Ai4Gamedev.MiniMax.Isolation.Views
 {
     using Ai4Gamedev.MiniMax.Isolation;
+    using Cysharp.Threading.Tasks;
+    using DG.Tweening;
     using UnityEngine;
 
     public class CellView : MonoBehaviour
@@ -34,9 +36,29 @@ namespace Ai4Gamedev.MiniMax.Isolation.Views
 
         public void SetState(CellState state)
         {
+            cellRenderer.material.DOKill();
             baseState = state;
             isHighlighted = false;
             ApplyColor(ColorForState(state));
+        }
+
+        public async UniTask AnimateRuin()
+        {
+            if (cellRenderer == null)
+            {
+                return;
+            }
+
+            cellRenderer.material.DOKill();
+            baseState = CellState.Ruined;
+            isHighlighted = false;
+
+            var tcs = new UniTaskCompletionSource();
+            cellRenderer.material.DOColor(ColorForState(CellState.Ruined), 0.35f)
+                .SetEase(Ease.InQuad)
+                .OnComplete(() => tcs.TrySetResult());
+
+            await tcs.Task;
         }
 
         public void SetDestinationHighlight()

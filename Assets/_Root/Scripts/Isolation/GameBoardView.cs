@@ -23,10 +23,45 @@ namespace Ai4Gamedev.MiniMax.Isolation
             SpawnCells(board.Cells);
         }
 
-        public UniTask ShowMove(Move move)
+        public async UniTask ShowMove(Move move)
         {
+            if (!playerViews.TryGetValue(move.PlayerId, out var playerView))
+            {
+                RefreshBoard();
+                return;
+            }
+
+            // Human player pre-animates the move on destination click, so skip it here.
+            // Bot players have not yet moved visually, so animate them now.
+            if (!IsAlreadyAtDestination(playerView, move.DestinationPosition))
+            {
+                await AnimatePlayerMove(move.PlayerId, move.DestinationPosition);
+            }
+
+            await cellViews[move.BlockPosition.Column, move.BlockPosition.Row].AnimateRuin();
+
             RefreshBoard();
-            return UniTask.CompletedTask;
+        }
+
+        public async UniTask AnimatePlayerMove(int playerId, Position destination)
+        {
+            if (!playerViews.TryGetValue(playerId, out var playerView))
+            {
+                return;
+            }
+
+            var originX = Mathf.RoundToInt(playerView.transform.position.x);
+            var originZ = Mathf.RoundToInt(playerView.transform.position.z);
+            cellViews[originX, originZ].SetState(CellState.Free);
+
+            var worldDestination = new Vector3(destination.Column, 0, destination.Row);
+            await playerView.AnimateMove(worldDestination);
+        }
+
+        private static bool IsAlreadyAtDestination(PlayerView playerView, Position destination)
+        {
+            return Mathf.RoundToInt(playerView.transform.position.x) == destination.Column &&
+                   Mathf.RoundToInt(playerView.transform.position.z) == destination.Row;
         }
 
         public void HighlightAsDestinations(IEnumerable<Position> positions)

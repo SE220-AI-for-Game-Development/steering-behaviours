@@ -21,6 +21,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
         public async UniTask<Move> GetMove(List<Move> possibleMoves)
         {
             var destination = await SelectDestination(possibleMoves);
+            await boardView.AnimatePlayerMove(Id, destination);
             var block = await SelectBlock(possibleMoves, destination);
 
             return possibleMoves.First(m =>

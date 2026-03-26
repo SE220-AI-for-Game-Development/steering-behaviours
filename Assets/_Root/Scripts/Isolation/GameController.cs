@@ -1,7 +1,9 @@
 namespace Ai4Gamedev.MiniMax.Isolation
 {
+    using Cysharp.Threading.Tasks;
     using UnityEngine;
 
+    [RequireComponent(typeof(BoardInput))]
     public class GameController : MonoBehaviour
     {
         [SerializeField]
@@ -10,7 +12,6 @@ namespace Ai4Gamedev.MiniMax.Isolation
         [SerializeField]
         private GameBoardView gameBoardView;
 
-        [SerializeField]
         private BoardInput boardInput;
 
         private readonly IPossibleMovesProvider movesProvider = new PossibleMovesProvider();
@@ -18,6 +19,11 @@ namespace Ai4Gamedev.MiniMax.Isolation
         private IPlayer secondPlayer;
         private IPlayer currentPlayer;
         private IGameBoard gameBoard;
+
+        private void Awake()
+        {
+            boardInput = GetComponent<BoardInput>();
+        }
 
         private async void Start()
         {
@@ -32,7 +38,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
             await RunGameLoop();
         }
 
-        private async Cysharp.Threading.Tasks.UniTask RunGameLoop()
+        private async UniTask RunGameLoop()
         {
             while (true)
             {

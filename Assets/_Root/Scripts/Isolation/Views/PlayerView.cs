@@ -1,20 +1,21 @@
 namespace Ai4Gamedev.MiniMax.Isolation.Views
 {
+    using Cysharp.Threading.Tasks;
+    using DG.Tweening;
     using UnityEngine;
 
     public class PlayerView : MonoBehaviour
     {
         [SerializeField]
-        private Renderer renderer;
+        private Renderer playerRenderer;
 
         private void Awake()
         {
-            if (renderer == null)
+            if (playerRenderer == null)
             {
-                renderer = GetComponent<Renderer>();
+                playerRenderer = GetComponent<Renderer>();
             }
 
-            // Ensure player pieces don't block mouse clicks on board cells.
             var colliders = GetComponents<Collider>();
             for (int i = 0; i < colliders.Length; i++)
             {
@@ -24,23 +25,34 @@ namespace Ai4Gamedev.MiniMax.Isolation.Views
 
         public void SetPlayerId(int playerId)
         {
-            if (renderer == null)
+            if (playerRenderer == null)
             {
                 return;
             }
 
-            if (playerId == 1)
+            playerRenderer.material.color = ColorForPlayer(playerId);
+        }
+
+        public async UniTask AnimateMove(Vector3 destination)
+        {
+            transform.DOKill();
+
+            var tcs = new UniTaskCompletionSource();
+            transform.DOMove(destination, 0.4f)
+                .SetEase(Ease.OutCubic)
+                .OnComplete(() => tcs.TrySetResult());
+
+            await tcs.Task;
+        }
+
+        private static Color ColorForPlayer(int playerId)
+        {
+            return playerId switch
             {
-                renderer.material.color = new Color(0.2f, 0.6f, 1f, 1f);
-            }
-            else if (playerId == 2)
-            {
-                renderer.material.color = new Color(0.9f, 0.85f, 0.2f, 1f);
-            }
-            else
-            {
-                renderer.material.color = Color.white;
-            }
+                1 => new Color(0.2f, 0.6f, 1f, 1f),
+                2 => new Color(0.9f, 0.85f, 0.2f, 1f),
+                _ => Color.white
+            };
         }
     }
 }
