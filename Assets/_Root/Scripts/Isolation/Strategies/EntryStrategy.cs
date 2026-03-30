@@ -49,7 +49,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
             return score;
         }
 
-        public List<Move> Sort(List<Move> moves)
+        public List<Move> Sort(IGameBoard board, List<Move> moves)
         {
             return moves.OrderByDescending(m =>
             {
