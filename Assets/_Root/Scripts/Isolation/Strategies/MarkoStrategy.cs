@@ -3,7 +3,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
     using System.Collections.Generic;
     using UnityEngine;
 
-    public class CoolStrategy : IMinimaxStrategy
+    public class MarkoStrategy : IMinimaxStrategy
     {
         private readonly string name;
         private readonly IPossibleMovesProvider movesProvider;
@@ -11,7 +11,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
         public string Name => name;
         public int SearchDepth { get; }
 
-        public CoolStrategy(string name = "Bot", int searchDepth = 10)
+        public MarkoStrategy(string name = "Yes", int searchDepth = 3)
         {
             this.name = name;
             SearchDepth = searchDepth;
@@ -20,10 +20,10 @@ namespace Ai4Gamedev.MiniMax.Isolation
 
         public int EvaluateBoard(IGameBoard board, int playerId)
         {
-            return movesProvider.GetPossibleMovesFor(board, playerId == 1 ? 2 : 1).Count;
+            return movesProvider.GetPossibleMovesFor(board, playerId).Count;
         }
 
-        public List<Move> Sort(List<Move> moves)
+        public List<Move> Sort(IGameBoard board, List<Move> moves)
         {
             var shuffled = new List<Move>(moves);
             for (var i = shuffled.Count - 1; i > 0; i--)

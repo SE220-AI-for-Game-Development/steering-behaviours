@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Ai4Gamedev.MiniMax.Isolation
 {
-    public class EntryStrategy : IMinimaxStrategy
+    public class KotliarStrategy : IMinimaxStrategy
     {
         private readonly string name;
         private readonly int searchDepth;
@@ -13,7 +13,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
         public string Name => name;
         public int SearchDepth => searchDepth;
 
-        public EntryStrategy(string name = "KIABot", int searchDepth = 4)
+        public KotliarStrategy(string name = "KIABot", int searchDepth = 4)
         {
             this.name = name;
             this.searchDepth = searchDepth;
@@ -49,7 +49,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
             return score;
         }
 
-        public List<Move> Sort(List<Move> moves)
+        public List<Move> Sort(IGameBoard board, List<Move> moves)
         {
             return moves.OrderByDescending(m =>
             {

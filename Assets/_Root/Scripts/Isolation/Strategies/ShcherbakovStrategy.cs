@@ -31,7 +31,7 @@ namespace Ai4Gamedev.MiniMax.Isolation
 			return myMoves - opponentMoves;
 		}
 
-		public List<Move> Sort(List<Move> moves)
+		public List<Move> Sort(IGameBoard board, List<Move> moves)
 		{
 			List<Move> sorted = new List<Move>(moves);
 			sorted.Sort((a, b) => {

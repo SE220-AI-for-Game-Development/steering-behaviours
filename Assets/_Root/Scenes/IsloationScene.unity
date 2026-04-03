@@ -946,14 +946,14 @@ MonoBehaviour:
   gameOverPopUp: {fileID: 714092888}
   matchStartPopUp: {fileID: 145558135}
   botName: Bot
-  minimaxVsMinimax: 0
+  minimaxVsMinimax: 1
   firstBotName: Bot A
   secondBotName: Bot B
   delayBetweenMovesSeconds: 0.35
   gameOverDelaySeconds: 1
   startPopupSeconds: 1
-  moveTimeoutSeconds: 2
-  loseOnTimeout: 0
+  moveTimeoutSeconds: 5
+  loseOnTimeout: 1
 --- !u!4 &1271200105
 Transform:
   m_ObjectHideFlags: 0

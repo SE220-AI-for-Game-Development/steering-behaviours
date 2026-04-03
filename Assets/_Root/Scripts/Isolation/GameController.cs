@@ -67,8 +67,8 @@ namespace Ai4Gamedev.MiniMax.Isolation
             gameBoard = new GameBoard(gameBoardView);
             if (minimaxVsMinimax)
             {
-                firstPlayer = new MinimaxPlayer(1, new NykytaKasianenkoMinimaxStrategy(gameBoard));
-                secondPlayer = new MinimaxPlayer(2, new LimitOpponentStrategy("Stranger bot"));
+                firstPlayer = new MinimaxPlayer(1, new LimitOpponentStrategy());
+                secondPlayer = new MinimaxPlayer(2, new KotliarStrategy());
                 currentPlayer = firstPlayer;
             }
             else
